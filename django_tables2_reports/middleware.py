@@ -14,14 +14,21 @@
 # You should have received a copy of the GNU Lesser General Public License
 # along with this software.  If not, see <http://www.gnu.org/licenses/>.
 
-from django_tables2_reports.utils import create_report_http_response, REQUEST_VARIABLE, REPORT_CONTENT_TYPES
+from django_tables2_reports.utils import (
+    create_report_http_response, REQUEST_VARIABLE, REPORT_CONTENT_TYPES)
+
+try:
+    from django.utils.deprecation import MiddlewareMixin
+except ImportError:
+    MiddlewareMixin = object
 
 
-class TableReportMiddleware(object):
+class TableReportMiddleware(MiddlewareMixin):
 
     def process_response(self, request, response):
         table_to_report = getattr(request, REQUEST_VARIABLE, None)
         current_content_type = response.get('Content-Type', None)
-        if table_to_report and current_content_type not in REPORT_CONTENT_TYPES:
+        if table_to_report and current_content_type not in\
+                REPORT_CONTENT_TYPES:
             return create_report_http_response(table_to_report, request)
         return response

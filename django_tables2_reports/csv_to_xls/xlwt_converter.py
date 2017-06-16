@@ -24,7 +24,8 @@ from .base import get_content
 PY3 = sys.version_info[0] == 3
 
 
-def convert(response, encoding='utf-8', title_sheet='Sheet 1',  content_attr='content', csv_kwargs=None):
+def convert(response, encoding='utf-8', title_sheet='Sheet 1',
+            content_attr='content', csv_kwargs=None):
     """Replace HttpResponse csv content with excel formatted data using xlwt
     library.
     """
