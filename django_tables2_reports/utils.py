@@ -22,7 +22,8 @@ REQUEST_VARIABLE = 'table_to_report'
 REPORT_CONTENT_TYPES = {
     'csv': 'text/csv',
     'xls': 'application/vnd.ms-excel',
-    'xlsx': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    'xlsx':
+        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
 }
 REPORT_MYMETYPE = REPORT_CONTENT_TYPES['xls']  # backwards compatible
 
@@ -32,16 +33,20 @@ def create_report_http_response(table, request):
     report = table.as_report(request, report_format=report_format)
     extension = get_extension_report(report_format)
     filename = '%s.%s' % (table.param_report, extension)
-    response = HttpResponse(report, content_type=REPORT_CONTENT_TYPES[extension])
+    response = HttpResponse(
+        report, content_type=REPORT_CONTENT_TYPES[extension])
     response['Content-Disposition'] = 'attachment; filename=%s' % filename
-    response = table.treatement_to_response(response, report_format=report_format)
+    response = table.treatement_to_response(
+        response, report_format=report_format)
     return response
 
 
 def get_excel_support():
-    # If you don't specify a xls library, this function will autodetect the library to use for xls writing. Default to xlwt.
+    # If you don't specify a xls library, this function will
+    # autodetect the library to use for xls writing. Default to xlwt.
     from django.conf import settings
-    return getattr(settings, "EXCEL_SUPPORT", None) or csv_to_xls.get_xls_support()
+    return getattr(settings, "EXCEL_SUPPORT", None) or\
+        csv_to_xls.get_xls_support()
 
 
 def get_extension_report(report_format):

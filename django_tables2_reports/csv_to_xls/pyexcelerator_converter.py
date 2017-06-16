@@ -23,7 +23,8 @@ import pyExcelerator
 from .base import get_content
 
 
-def convert(response, encoding='utf-8', title_sheet='Sheet 1', content_attr='content', csv_kwargs=None):
+def convert(response, encoding='utf-8', title_sheet='Sheet 1',
+            content_attr='content', csv_kwargs=None):
     csv_kwargs = csv_kwargs or {}
     workbook = pyExcelerator.Workbook()
     worksheet = workbook.add_sheet(title_sheet)

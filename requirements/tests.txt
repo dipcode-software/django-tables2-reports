@@ -1,0 +1,7 @@
+Django
+pillow
+django-tables2
+pyExcelerator
+xlwt
+openpyxl
+coveralls

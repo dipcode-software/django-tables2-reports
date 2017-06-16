@@ -19,7 +19,7 @@ import sys
 from django.conf import settings
 from django.http import HttpRequest
 from django.test import TestCase
-from django.utils.unittest import skipIf
+from unittest import skipIf
 
 import django_tables2
 import django_tables2_reports.tables
@@ -69,7 +69,8 @@ class TestCsvGeneration(TestCase):
         # Expect cells containing commas to be escaped with quotes.
         content = response.content
         if PY3:
-            content = content.decode(settings.DEFAULT_CHARSET).replace('\x00', '')
+            content = content.decode(settings.DEFAULT_CHARSET).replace(
+                '\x00', '')
         self.assertEqual(
             content,
             'Name,Item Num\r\n'
@@ -100,7 +101,8 @@ class TestCsvGeneration(TestCase):
                   'Normal string,1\r\n'
                   'String with ' + unichr(0x16c) + ' char,2\r\n')
         if PY3:
-            content = content.decode(settings.DEFAULT_CHARSET).replace('\x00', '')
+            content = content.decode(settings.DEFAULT_CHARSET).replace(
+                '\x00', '')
         else:
             result = result.encode(settings.DEFAULT_CHARSET)
         self.assertEqual(content, result)
@@ -128,7 +130,8 @@ class TestCsvGeneration(TestCase):
         # data.
         content = response.content
         if PY3:
-            content = content.decode(settings.DEFAULT_CHARSET).replace('\x00', '')
+            content = content.decode(settings.DEFAULT_CHARSET).replace(
+                '\x00', '')
         self.assertEqual(
             content,
             ('Name,Item Num\r\n'
@@ -161,9 +164,11 @@ class TestCsvGeneration(TestCase):
         self.assertEqual(response.status_code, 200)
         content = response.content
         if PY3:
-            content = content.decode(settings.DEFAULT_CHARSET).replace('\x00', '')
+            content = content.decode(settings.DEFAULT_CHARSET).replace(
+                '\x00', '')
 
-        self.assertEqual(table.exclude, ('name',))  # Attribute 'exclude_from_report' shouldn't overwrite 'exclude'
+        # Attribute 'exclude_from_report' shouldn't overwrite 'exclude'
+        self.assertEqual(table.exclude, ('name',))
         self.assertEqual(
             content,
             ('Name\r\n'
@@ -201,7 +206,9 @@ class TestExcelGeneration(TestCase):
 
     def test_excel_simple_input(self, extension='xls'):
         """Test ability to generate excel output with simple input data."""
-        excel_support = getattr(settings, 'EXCEL_SUPPORT', django_tables2_reports.utils.get_excel_support())
+        excel_support = getattr(
+            settings, 'EXCEL_SUPPORT',
+            django_tables2_reports.utils.get_excel_support())
         response = self.table.treatement_to_response(
             self.table.as_csv(HttpRequest()),
             report_format='xls')

@@ -31,13 +31,16 @@ class ReportTableView(SingleTableView):
         options = {}
         table_class = self.get_table_class()
         table = table_class(self.get_table_data(), **kwargs)
-        paginate = self.get_table_pagination()
+        paginate = self.get_table_pagination(table)
         if paginate is not None:
             options['paginate'] = paginate
-        self.table_to_report = RequestConfigReport(self.request, **options).configure(table)
+        self.table_to_report = RequestConfigReport(
+            self.request, **options).configure(table)
         return table
 
     def render_to_response(self, context, **response_kwargs):
         if self.table_to_report:
-            return create_report_http_response(self.table_to_report, self.request)
-        return super(ReportTableView, self).render_to_response(context, **response_kwargs)
+            return create_report_http_response(
+                self.table_to_report, self.request)
+        return super(ReportTableView, self).render_to_response(
+            context, **response_kwargs)

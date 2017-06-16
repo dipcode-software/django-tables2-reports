@@ -18,20 +18,6 @@ import csv
 import codecs
 import sys
 from functools import wraps
-
-PY3 = sys.version_info[0] == 3
-
-if PY3:
-    string = str
-    unicode = str
-else:
-    string = basestring
-
-try:
-    from cStringIO import StringIO
-except ImportError:
-    from io import StringIO
-
 import django_tables2 as tables
 
 from django.conf import settings
@@ -43,6 +29,20 @@ from django_tables2_reports import csv_to_xls
 from django_tables2_reports.utils import (DEFAULT_PARAM_PREFIX,
                                           get_excel_support,
                                           generate_prefixto_report)
+
+
+PY3 = sys.version_info[0] == 3
+
+if PY3:
+    string = str
+    unicode = str
+else:
+    string = basestring # NOQA
+
+try:
+    from cStringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 
 # Unicode CSV writer, copied direct from Python docs:
@@ -82,22 +82,28 @@ class UnicodeWriter:
 
 class TableReport(tables.Table):
 
-    exclude_from_report = ()  # the names of columns that should be excluded from report
+    # the names of columns that should be excluded from report
+    exclude_from_report = ()
 
     def __init__(self, *args, **kwargs):
-        if not 'template' in kwargs:
+        if 'template' not in kwargs:
             kwargs['template'] = 'django_tables2_reports/table.html'
-        prefix_param_report = kwargs.pop('prefix_param_report', DEFAULT_PARAM_PREFIX)
+        prefix_param_report = kwargs.pop(
+            'prefix_param_report', DEFAULT_PARAM_PREFIX)
         super(TableReport, self).__init__(*args, **kwargs)
         self.param_report = generate_prefixto_report(self, prefix_param_report)
         self.formats = [(_('CSV Report'), 'csv')]
         if get_excel_support():
             self.formats.append((_('XLS Report'), 'xls'))
         if hasattr(self, 'Meta'):
-            self.exclude_from_report = getattr(self.Meta, 'exclude_from_report', ())
+            self.exclude_from_report = getattr(
+                self.Meta, 'exclude_from_report', ())
 
     def _with_exclude_from_report(method):
-        """ Put to 'exclude' columns from 'exclude_from_report', and revert this after method's call """
+        """
+        Put to 'exclude' columns from 'exclude_from_report',
+        and revert this after method's call
+        """
         @wraps(method)
         def with_exclude(self, *args, **kwargs):
             origin_exclude = self.exclude
@@ -141,7 +147,9 @@ class TableReport(tables.Table):
 
     def treatement_to_response(self, response, report_format='csv'):
         if report_format == 'xls':
-            csv_to_xls.convert(response, get_excel_support(),
-                               encoding=settings.DEFAULT_CHARSET,
-                               title_sheet=self.param_report[:csv_to_xls.MAX_LENGTH_TITLE_SHEET])
+            csv_to_xls.convert(
+                response, get_excel_support(),
+                encoding=settings.DEFAULT_CHARSET,
+                title_sheet=self.param_report[
+                    :csv_to_xls.MAX_LENGTH_TITLE_SHEET])
         return response
