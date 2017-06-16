@@ -14,6 +14,8 @@ django-tables2-reports
 
 [![Build Status](https://travis-ci.org/dipcode-software/django-tables2-reports.svg?branch=master)](https://travis-ci.org/dipcode-software/django-tables2-reports)
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/77a0c6286a6443c9ad34c01af32e3fde)](https://www.codacy.com/app/srtabs/django-tables2-reports?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=dipcode-software/django-tables2-reports&amp;utm_campaign=Badge_Grade)
+
 With django-tables2-reports you can get a report (CSV, XLS) of any `table <http://pypi.python.org/pypi/django-tables2/>`_  with **minimal changes** to your project
 
 Requirements
