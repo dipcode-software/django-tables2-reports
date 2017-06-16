@@ -4,12 +4,6 @@
 django-tables2-reports
 ======================
 
-.. image:: https://travis-ci.org/goinnn/django-tables2-reports.png?branch=master
-    :target: https://travis-ci.org/goinnn/django-tables2-reports
-
-.. image:: https://coveralls.io/repos/goinnn/django-tables2-reports/badge.png?branch=master
-    :target: https://coveralls.io/r/goinnn/django-tables2-reports
-
 [![Coverage Status](https://coveralls.io/repos/github/dipcode-software/django-tables2-reports/badge.svg?branch=master)](https://coveralls.io/github/dipcode-software/django-tables2-reports?branch=master)
 
 [![Build Status](https://travis-ci.org/dipcode-software/django-tables2-reports.svg?branch=master)](https://travis-ci.org/dipcode-software/django-tables2-reports)
